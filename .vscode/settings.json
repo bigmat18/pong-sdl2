@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "game.h": "c",
+        "struct.h": "c",
+        "render.h": "c",
+        "utils.h": "c",
+        "time.h": "c",
+        "socket.h": "c"
+    }
+}
