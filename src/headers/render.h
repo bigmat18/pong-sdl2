@@ -1,5 +1,5 @@
 #include <SDL2/SDL.h>
-#include "headers/entity.h"
+#include "entity.h"
 
 #ifndef RENDER_H
 #define RENDER_H

@@ -1,5 +1,6 @@
 #include "headers/render.h"
 #include "headers/constants.h"
+#include "headers/utils.h"
 
 /*
  * =================================
