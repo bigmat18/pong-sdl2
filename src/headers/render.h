@@ -13,7 +13,7 @@
 void renderGame(SDL_Renderer *renderer, Game *game);
 
 /* Render a player */
-void renderPlayer(SDL_Renderer *renderer, Game *game, int player);
+void renderPlayers(SDL_Renderer *renderer, Game *game);
 
 /* Render the game ball*/
 void renderBall(SDL_Renderer *renderer, Game *game);

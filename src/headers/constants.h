@@ -5,13 +5,15 @@
 #define SCREEN_WIDTH        700
 #define SCREEN_HEIGTH       600
 
-#define PLAYER_WIGTH        15
-#define PLAYER_HEIGTH       60
+#define PLAYER_WIGTH        20
+#define PLAYER_HEIGTH       80
+
+#define BALL_RADIUS         15
 
 /* ====== COLOR ====== */
 #define BACKGROUND_COLOR    0x000000FF
-#define SNAKE_COLOR         0x00FF00FF
-#define FOOD_COLOR          0xFF0000FF
+#define PLAYER_COLOR        0x00FF00FF
+#define BALL_COLOR          0xFF0000FF
 #define SCORE_COLOR         0xFFFFFF00
 
 /* ====== CONVERTER ====== */
