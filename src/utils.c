@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <SDL2/SDL.h>
+#include "headers/entity.h"
+#include "headers/constants.h"
 #include "headers/utils.h"
 
 /**
@@ -23,3 +25,18 @@ void *scp(void *ptr){
     }
     return ptr;
 }
+
+/**
+ * ==============================
+ * ====== RANDOM FUNCTION =======
+ */
+
+Position getRandomPosition(){
+    int x = getRandomInt(0, SCREEN_WIDTH);
+    int y = getRandomInt(0, SCREEN_HEIGTH);
+
+    Position newPosition = {x, y};
+    return newPosition;
+}
+
+int getRandomInt(int min, int max) { return rand() % (max + 1 - min) + min; }

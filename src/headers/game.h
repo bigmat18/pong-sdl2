@@ -1,4 +1,5 @@
 #include "entity.h"
+#include <stdbool.h>
 
 #ifndef GAME_H
 #define GAME_H
@@ -24,5 +25,9 @@ void initBall(Game *game);
 
 /* Update player position reference with 'player' */
 void updatePlayerPosition(Game *game, int player, PlayerMovment movment);
+
+void updateBallPosition(Game *game, Position nextPoint, int diraction);
+
+bool isBallMovmentAllowed(Game *game);
 
 #endif

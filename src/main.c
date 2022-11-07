@@ -11,6 +11,8 @@
 #include "headers/game.h"
 
 int main(void){
+    srand(time(NULL));
+
     SDL_Init(SDL_INIT_VIDEO);
 
     SDL_Window *window = scp(SDL_CreateWindow("PingPoing", 0, 0, SCREEN_WIDTH, SCREEN_HEIGTH, SDL_WINDOW_RESIZABLE));
@@ -42,6 +44,8 @@ int main(void){
                 }
             }
         }
+
+        updateBallPosition(&game, (Position){0,0},-1);
         renderGame(renderer, &game);
     }
     return 0;

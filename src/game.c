@@ -1,8 +1,11 @@
 #include "headers/entity.h"
 #include "headers/game.h"
 #include "headers/constants.h"
+#include <stdbool.h>
 #include <SDL2/SDL.h>
 #include <math.h>
+#include <time.h>
+#include <sys/time.h>
 
 /*
  * =================================
@@ -50,4 +53,42 @@ void updatePlayerPosition(Game *game, int player, PlayerMovment movment){
             break;
         }
     }
+}
+
+void updateBallPosition(Game *game, Position nextPoint, int diraction) {
+    if(!isBallMovmentAllowed(game)) return;
+
+    int newXPos;
+    int newYPos;
+
+    newXPos = game->ball.position.x + diraction;
+    newYPos = (int)floorf((((nextPoint.y - game->ball.position.y) / (nextPoint.x - game->ball.position.x)) * (newXPos - game->ball.position.x)) + game->ball.position.y);
+
+    game->ball.position.x = newXPos;
+    game->ball.position.y = newYPos;
+}
+
+bool isBallMovmentAllowed(Game *game){
+
+    static struct timeval oldTime = {0};
+    static struct timeval newTime = {0};
+    static bool init = false;
+    double elapsed = -1;
+
+    if(!init){
+        init = true;
+        gettimeofday(&oldTime, NULL);
+        return true;
+    }
+
+    gettimeofday(&newTime, NULL);
+    elapsed = (double)(newTime.tv_usec - oldTime.tv_usec) / 1000000 +
+              (double)(newTime.tv_sec - oldTime.tv_sec);
+
+    if(elapsed < GAME_SPEED) return false;
+    else{
+        oldTime = newTime;
+        return true;
+    }
+
 }
