@@ -7,6 +7,7 @@
 
 #define PLAYER_WIGTH        20
 #define PLAYER_HEIGTH       80
+#define PLAYER_SPEED        40
 
 #define BALL_RADIUS         15
 

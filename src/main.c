@@ -27,6 +27,20 @@ int main(void){
         if(SDL_PollEvent(&event)){
             if(event.type == SDL_QUIT) 
                 quit = true;
+
+            switch(event.key.keysym.scancode){
+                case SDL_SCANCODE_UP: {
+                    updatePlayerPosition(&game, 0, MOVING_UP);
+                    break;
+                }
+                case SDL_SCANCODE_DOWN: {
+                    updatePlayerPosition(&game, 0, MOVING_DOWN);
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
         }
         renderGame(renderer, &game);
     }

@@ -20,8 +20,8 @@ void renderGame(SDL_Renderer *renderer, Game *game){
 
 void renderPlayers(SDL_Renderer *renderer, Game *game){
     SDL_Color color = {HEX_COLOR(PLAYER_COLOR)};
-    renderSquare(renderer, &game->players[0].positon, PLAYER_WIGTH, PLAYER_HEIGTH, color);
-    renderSquare(renderer, &game->players[1].positon, PLAYER_WIGTH, PLAYER_HEIGTH, color);
+    renderSquare(renderer, &game->players[0].position, PLAYER_WIGTH, PLAYER_HEIGTH, color);
+    renderSquare(renderer, &game->players[1].position, PLAYER_WIGTH, PLAYER_HEIGTH, color);
 }
 
 void renderBall(SDL_Renderer *renderer, Game *game){

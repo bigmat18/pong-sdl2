@@ -6,6 +6,7 @@
         "utils.h": "c",
         "time.h": "c",
         "socket.h": "c",
-        "__node_handle": "c"
+        "__node_handle": "c",
+        "entity.h": "c"
     }
 }
