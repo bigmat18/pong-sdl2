@@ -75,9 +75,9 @@ void moveBall(Game *game){
     
     Position newPosition = getBallPosition(game, startPoint, endPoint, diraction);
 
-    // if(hasBallCollided(game, newPosition)){
-    //     // Calcolate new possible point
-    // }
+    if(hasBallCollided(game, newPosition)){
+        // Calcolate new possible point
+    }
 
     game->ball.position.x = newPosition.x;
     game->ball.position.y = newPosition.y;
@@ -124,6 +124,17 @@ bool isBallMovmentAllowed(Game *game){
 
 }
 
-bool hasBallCollided(Game *game, Position newPosition){
+bool hasBallCollided(Game *game, Position position){
+
+    for(int i=0; i<360; i++){
+       int x = (game->ball.position.x + (cos(i * (M_PI / 180)) * BALL_RADIUS));
+       int y = (game->ball.position.y + (sin(i * (M_PI / 180)) * BALL_RADIUS));
+
+       if (x == SCREEN_WIDTH || x == 0 || y == 0 || y == SCREEN_HEIGTH){
+           return false;
+       }
+    }
+
     return true;
 }
+
