@@ -62,7 +62,10 @@ void updateBallPosition(Game *game, Position nextPoint, int diraction) {
     int newYPos;
 
     newXPos = game->ball.position.x + diraction;
-    newYPos = (int)floorf((((nextPoint.y - game->ball.position.y) / (nextPoint.x - game->ball.position.x)) * (newXPos - game->ball.position.x)) + game->ball.position.y);
+    newYPos = (int)floorf((((float)(nextPoint.y - game->ball.position.y) / 
+                            (float)(nextPoint.x - game->ball.position.x)) * 
+                           (newXPos - game->ball.position.x)) + 
+                          game->ball.position.y);
 
     game->ball.position.x = newXPos;
     game->ball.position.y = newYPos;
@@ -78,7 +81,7 @@ bool isBallMovmentAllowed(Game *game){
     if(!init){
         init = true;
         gettimeofday(&oldTime, NULL);
-        return true;
+        return false;
     }
 
     gettimeofday(&newTime, NULL);

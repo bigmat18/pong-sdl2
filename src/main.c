@@ -45,7 +45,7 @@ int main(void){
             }
         }
 
-        updateBallPosition(&game, (Position){0,0},-1);
+        updateBallPosition(&game, (Position){0,20},-1);
         renderGame(renderer, &game);
     }
     return 0;
