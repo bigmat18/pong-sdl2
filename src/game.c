@@ -31,6 +31,7 @@ void initPlayer(Game *game, int player){
 void initBall(Game *game){
     game->ball.position.x = (int)floorf(SCREEN_WIDTH / 2);
     game->ball.position.y = (int)floorf(SCREEN_HEIGTH / 2);
+    game->ball.speed = BALL_SPEED;
 }
 
 /*
@@ -73,11 +74,24 @@ void moveBall(Game *game){
 
     if(!isBallMovmentAllowed(game)) return;
     
+    int collided = hasBallCollided(game, game->ball.position);
 
-    if(hasBallCollided(game, game->ball.position)){
+    if(collided != 0){
+
+        // float m = getAngularCoefficient(startPoint, endPoint);
+        // float grad = atanf(m);
+
+        // float x = (game->ball.position.x + (cosf(grad * (M_PI / 180)) * BALL_RADIUS));
+        // float y = (game->ball.position.y + (sinf(grad * (M_PI / 180)) * BALL_RADIUS));
+
+
         startPoint = game->ball.position;
-        endPoint = getRandomPosition();
-        diraction *= -1;
+
+        if (collided == 3) getRandomInt(0, SCREEN_WIDTH);
+        else endPoint.x = getRandomInt(endPoint.x, SCREEN_WIDTH);
+        endPoint.y = getRandomInt(0, SCREEN_HEIGTH);
+
+        if (collided == 1) diraction *= -1;
     }
 
     Position newPosition = getBallPosition(game, startPoint, endPoint, diraction);
@@ -93,12 +107,7 @@ Position getBallPosition(Game *game, Position startPoint, Position endPoint, int
 
     newXPos = game->ball.position.x + diraction;
 
-    float step1 = (float)(endPoint.y - startPoint.y);
-    float step2 = (float)(endPoint.x - startPoint.x);
-    float step3 = (float)(newXPos - startPoint.x);
-    float step4 = (((step1 / step2) * step3) + (float)(startPoint.y));
-    newYPos = (int)floorf(step4);
-
+    newYPos = (int)floorf((getAngularCoefficient(startPoint, endPoint) * (float)(newXPos - startPoint.x)) + (float)(startPoint.y));
     return (Position){newXPos, newYPos};
 }
 
@@ -119,7 +128,7 @@ bool isBallMovmentAllowed(Game *game){
     elapsed = (double)(newTime.tv_usec - oldTime.tv_usec) / 1000000 +
               (double)(newTime.tv_sec - oldTime.tv_sec);
 
-    if(elapsed < GAME_SPEED) return false;
+    if(elapsed < BALL_SPEED) return false;
     else{
         oldTime = newTime;
         return true;
@@ -127,17 +136,17 @@ bool isBallMovmentAllowed(Game *game){
 
 }
 
-bool hasBallCollided(Game *game, Position position){
+int hasBallCollided(Game *game, Position position){
 
     for(int i=0; i<360; i++){
        int x = (game->ball.position.x + (cos(i * (M_PI / 180)) * BALL_RADIUS));
        int y = (game->ball.position.y + (sin(i * (M_PI / 180)) * BALL_RADIUS));
 
-       if (x == SCREEN_WIDTH || x == 0 || y == 0 || y == SCREEN_HEIGTH){
-           return true;
-       }
+       if (x == SCREEN_WIDTH || x == 0 ) return 1;
+       else if(y == 0) return 2;
+       else if(y == SCREEN_HEIGTH) return 3;
     }
 
-    return false;
+    return 0;
 }
 

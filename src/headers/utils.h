@@ -8,6 +8,11 @@ void scc(int code);
 void *scp(void *ptr);
 
 /* ====== RANDOM FUNCTION ====== */
-int getRandomInt(int max, int min);
+int getRandomInt(int min, int max);
+float getRandomFloat(float min, float max);
 Position getRandomPosition();
+
+/* ====== MATH FUNCTION ======= */
+float getAngularCoefficient(Position point1, Position point2);
+
 #endif

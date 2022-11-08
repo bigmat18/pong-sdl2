@@ -15,6 +15,7 @@ typedef struct {
 /* Define the ball in the game */
 typedef struct {
     Position position;
+    float speed;
 } Ball;
 
 /* Define a player in the game */

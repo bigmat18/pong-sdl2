@@ -1,5 +1,6 @@
 #include "entity.h"
 #include <stdbool.h>
+#include <SDL2/SDL.h>
 
 #ifndef GAME_H
 #define GAME_H
@@ -32,6 +33,6 @@ Position getBallPosition(Game *game, Position startPoint, Position endPoint, int
 
 bool isBallMovmentAllowed(Game *game);
 
-bool hasBallCollided(Game *game, Position newPosition);
+int hasBallCollided(Game *game, Position newPosition);
 
 #endif

@@ -39,4 +39,14 @@ Position getRandomPosition(){
     return newPosition;
 }
 
-int getRandomInt(int min, int max) { return rand() % (max + 1 - min) + min; }
+int getRandomInt(int min, int max) { 
+    return rand() % (max + 1 - min) + min; 
+}
+
+float getRandomFloat(float min, float max) { 
+    return min + ((float)rand() / RAND_MAX) * (max - min); 
+}
+
+float getAngularCoefficient(Position point1, Position point2) {
+    return (float)(point2.y - point1.y) / (float)(point2.x - point1.x);
+}
