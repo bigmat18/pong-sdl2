@@ -29,10 +29,10 @@ void updatePlayerPosition(Game *game, int player, PlayerMovment movment);
 
 void moveBall(Game *game);
 
-Position getBallPosition(Game *game, Position startPoint, Position endPoint, int diraction);
+Position getBallPosition(Game *game, Position startPoint, Position endPoint);
 
 bool isBallMovmentAllowed(Game *game);
 
-int hasBallCollided(Game *game, Position newPosition);
+bool hasBallCollided(Game *game);
 
 #endif

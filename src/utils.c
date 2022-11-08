@@ -48,5 +48,5 @@ float getRandomFloat(float min, float max) {
 }
 
 float getAngularCoefficient(Position point1, Position point2) {
-    return (float)(point2.y - point1.y) / (float)(point2.x - point1.x);
+    return ((float)(point2.y - point1.y) / (float)(point2.x - point1.x));
 }

@@ -32,6 +32,7 @@ void initBall(Game *game){
     game->ball.position.x = (int)floorf(SCREEN_WIDTH / 2);
     game->ball.position.y = (int)floorf(SCREEN_HEIGTH / 2);
     game->ball.speed = BALL_SPEED;
+    game->ball.diraction = -1;
 }
 
 /*
@@ -62,50 +63,45 @@ void updatePlayerPosition(Game *game, int player, PlayerMovment movment){
 void moveBall(Game *game){
     static Position endPoint;
     static Position startPoint;
-    static int diraction; 
     static bool init = false;
 
     if(!init){
-        endPoint = getRandomPosition();
+        endPoint.x = (int)floorf(getRandomFloat(-20, 20));
+        endPoint.y = (int)floorf(getRandomFloat(-20, 20));
         startPoint = game->ball.position;
-        diraction = -1;
         init = true;
     }
 
     if(!isBallMovmentAllowed(game)) return;
     
-    int collided = hasBallCollided(game, game->ball.position);
 
-    if(collided != 0){
+    if(hasBallCollided(game)){
 
-        // float m = getAngularCoefficient(startPoint, endPoint);
-        // float grad = atanf(m);
+        float m = getAngularCoefficient(startPoint, endPoint);
+        float grad = atanf(m) * (180 / M_PI);
 
-        // float x = (game->ball.position.x + (cosf(grad * (M_PI / 180)) * BALL_RADIUS));
-        // float y = (game->ball.position.y + (sinf(grad * (M_PI / 180)) * BALL_RADIUS));
+        float newM = getRandomFloat(grad - 20, grad + 20) * (M_PI / 180);
 
+        int x = (int)floorf(game->ball.position.x + (cosf(newM) * BALL_RADIUS));
+        int y = (int)floorf(game->ball.position.y + (sinf(newM) * BALL_RADIUS));
 
         startPoint = game->ball.position;
-
-        if (collided == 3) getRandomInt(0, SCREEN_WIDTH);
-        else endPoint.x = getRandomInt(endPoint.x, SCREEN_WIDTH);
-        endPoint.y = getRandomInt(0, SCREEN_HEIGTH);
-
-        if (collided == 1) diraction *= -1;
+        endPoint.x = x;
+        endPoint.y = y;
     }
 
-    Position newPosition = getBallPosition(game, startPoint, endPoint, diraction);
+    Position newPosition = getBallPosition(game, startPoint, endPoint);
 
     game->ball.position.x = newPosition.x;
     game->ball.position.y = newPosition.y;
 }
 
 
-Position getBallPosition(Game *game, Position startPoint, Position endPoint, int diraction) {
+Position getBallPosition(Game *game, Position startPoint, Position endPoint) {
     int newXPos;
     int newYPos;
 
-    newXPos = game->ball.position.x + diraction;
+    newXPos = game->ball.position.x + game->ball.diraction;
 
     newYPos = (int)floorf((getAngularCoefficient(startPoint, endPoint) * (float)(newXPos - startPoint.x)) + (float)(startPoint.y));
     return (Position){newXPos, newYPos};
@@ -136,17 +132,19 @@ bool isBallMovmentAllowed(Game *game){
 
 }
 
-int hasBallCollided(Game *game, Position position){
+bool hasBallCollided(Game *game){
 
     for(int i=0; i<360; i++){
        int x = (game->ball.position.x + (cos(i * (M_PI / 180)) * BALL_RADIUS));
        int y = (game->ball.position.y + (sin(i * (M_PI / 180)) * BALL_RADIUS));
 
-       if (x == SCREEN_WIDTH || x == 0 ) return 1;
-       else if(y == 0) return 2;
-       else if(y == SCREEN_HEIGTH) return 3;
+       if (x == SCREEN_WIDTH || x == 0) {
+            game->ball.diraction *= -1;
+            return true;
+       } else if (y == 0 || y == SCREEN_HEIGTH) return true;
+       
     }
 
-    return 0;
+    return false;
 }
 
