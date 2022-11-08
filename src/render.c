@@ -12,7 +12,7 @@ void renderGame(SDL_Renderer *renderer, Game *game){
     scc(SDL_SetRenderDrawColor(renderer, HEX_COLOR(BACKGROUND_COLOR)));
     SDL_RenderClear(renderer);
 
-    renderPlayers(renderer, game);
+    //renderPlayers(renderer, game);
     renderBall(renderer, game);
 
     SDL_RenderPresent(renderer);
