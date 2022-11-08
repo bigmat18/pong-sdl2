@@ -10,7 +10,7 @@
 #define PLAYER_SPEED        40
 
 #define BALL_RADIUS         15
-#define GAME_SPEED          0.005
+#define GAME_SPEED          0.003
 
 /* ====== COLOR ====== */
 #define BACKGROUND_COLOR    0x000000FF

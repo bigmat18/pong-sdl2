@@ -26,8 +26,12 @@ void initBall(Game *game);
 /* Update player position reference with 'player' */
 void updatePlayerPosition(Game *game, int player, PlayerMovment movment);
 
-void updateBallPosition(Game *game, Position nextPoint, int diraction);
+void moveBall(Game *game);
+
+Position getBallPosition(Game *game, Position startPoint, Position endPoint, int diraction);
 
 bool isBallMovmentAllowed(Game *game);
+
+bool hasBallCollided(Game *game, Position newPosition);
 
 #endif

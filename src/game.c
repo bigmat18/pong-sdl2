@@ -1,6 +1,8 @@
 #include "headers/entity.h"
 #include "headers/game.h"
 #include "headers/constants.h"
+#include "headers/utils.h"
+
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 #include <math.h>
@@ -55,20 +57,46 @@ void updatePlayerPosition(Game *game, int player, PlayerMovment movment){
     }
 }
 
-void updateBallPosition(Game *game, Position nextPoint, int diraction) {
-    if(!isBallMovmentAllowed(game)) return;
 
+void moveBall(Game *game){
+    static Position endPoint;
+    static Position startPoint;
+    static int diraction; 
+    static bool init = false;
+
+    if(!init){
+        endPoint = getRandomPosition();
+        startPoint = game->ball.position;
+        diraction = -1;
+        init = true;
+    }
+
+    if(!isBallMovmentAllowed(game)) return;
+    
+    Position newPosition = getBallPosition(game, startPoint, endPoint, diraction);
+
+    // if(hasBallCollided(game, newPosition)){
+    //     // Calcolate new possible point
+    // }
+
+    game->ball.position.x = newPosition.x;
+    game->ball.position.y = newPosition.y;
+}
+
+
+Position getBallPosition(Game *game, Position startPoint, Position endPoint, int diraction) {
     int newXPos;
     int newYPos;
 
     newXPos = game->ball.position.x + diraction;
-    newYPos = (int)floorf((((float)(nextPoint.y - game->ball.position.y) / 
-                            (float)(nextPoint.x - game->ball.position.x)) * 
-                           (newXPos - game->ball.position.x)) + 
-                          game->ball.position.y);
 
-    game->ball.position.x = newXPos;
-    game->ball.position.y = newYPos;
+    float step1 = (float)(endPoint.y - startPoint.y);
+    float step2 = (float)(endPoint.x - startPoint.x);
+    float step3 = (float)(newXPos - startPoint.x);
+    float step4 = (((step1 / step2) * step3) + (float)(startPoint.y));
+    newYPos = (int)floorf(step4);
+
+    return (Position){newXPos, newYPos};
 }
 
 bool isBallMovmentAllowed(Game *game){
@@ -94,4 +122,8 @@ bool isBallMovmentAllowed(Game *game){
         return true;
     }
 
+}
+
+bool hasBallCollided(Game *game, Position newPosition){
+    return true;
 }
