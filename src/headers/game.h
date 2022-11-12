@@ -33,6 +33,6 @@ Position getBallPosition(Game *game, Position startPoint, Position endPoint);
 
 bool isBallMovmentAllowed(Game *game);
 
-bool hasBallCollided(Game *game);
+Position* getBallCollidedCoordinates(Game *game);
 
 #endif

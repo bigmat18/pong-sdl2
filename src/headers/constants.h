@@ -14,8 +14,8 @@
 
 /* ====== COLOR ====== */
 #define BACKGROUND_COLOR    0x000000FF
-#define PLAYER_COLOR        0x00FF00FF
-#define BALL_COLOR          0xFF0000FF
+#define PLAYER_COLOR        0x000000FF
+#define BALL_COLOR          0xFFFFFFFF
 #define SCORE_COLOR         0xFFFFFF00
 
 /* ====== CONVERTER ====== */
