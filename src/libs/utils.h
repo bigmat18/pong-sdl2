@@ -13,6 +13,6 @@ float getRandomFloat(float min, float max);
 Position getRandomPosition();
 
 /* ====== MATH FUNCTION ======= */
-float getAngularCoefficient(Position point1, Position point2);
+float getAngularCoefficient(Position* point1, Position* point2);
 
 #endif

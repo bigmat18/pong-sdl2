@@ -4,11 +4,11 @@
 
 #include <SDL2/SDL.h>
 
-#include "headers/constants.h"
-#include "headers/utils.h"
-#include "headers/entity.h"
-#include "headers/render.h"
-#include "headers/game.h"
+#include "libs/constants.h"
+#include "libs/utils.h"
+#include "libs/entity.h"
+#include "libs/render.h"
+#include "libs/game.h"
 
 int main(void){
     srand(time(NULL));
@@ -45,7 +45,7 @@ int main(void){
             }
         }
 
-        moveBall(&game);
+        moveBall(&game, quit);
         renderGame(renderer, &game);
     }
     return 0;

@@ -27,9 +27,13 @@ void initBall(Game *game);
 /* Update player position reference with 'player' */
 void updatePlayerPosition(Game *game, int player, PlayerMovment movment);
 
-void moveBall(Game *game);
+void moveBall(Game *game, bool end);
 
-Position getBallPosition(Game *game, Position startPoint, Position endPoint);
+Position getBallPosition(Game *game, Position *startPoint, Position *endPoint);
+
+void updateBallMovment(Game *game, Position *startPoint, Position *endPoint, Position *collidedCoordinates);
+
+void updateBallDiraction(Game *game, Position *collidedCoordinates, float m);
 
 bool isBallMovmentAllowed(Game *game);
 

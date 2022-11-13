@@ -1,6 +1,6 @@
-#include "headers/render.h"
-#include "headers/constants.h"
-#include "headers/utils.h"
+#include "libs/render.h"
+#include "libs/constants.h"
+#include "libs/utils.h"
 #include <math.h>
 
 /*

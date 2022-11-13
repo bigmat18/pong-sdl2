@@ -1,7 +1,7 @@
-#include "headers/entity.h"
-#include "headers/game.h"
-#include "headers/constants.h"
-#include "headers/utils.h"
+#include "libs/entity.h"
+#include "libs/game.h"
+#include "libs/constants.h"
+#include "libs/utils.h"
 
 #include <stdbool.h>
 #include <SDL2/SDL.h>
@@ -60,16 +60,25 @@ void updatePlayerPosition(Game *game, int player, PlayerMovment movment){
 }
 
 
-void moveBall(Game *game){
-    static Position endPoint;
-    static Position startPoint;
+void moveBall(Game *game, bool end){
+    static Position *endPoint;
+    static Position *startPoint;
     static bool init = false;
     static bool activeCollision = true;
 
+    if(end){
+        free(startPoint);
+        free(endPoint);
+        return;
+    }
+
     if(!init){
-        endPoint.x = 0;
-        endPoint.y = 0;
-        startPoint = game->ball.position;
+        startPoint = malloc(sizeof(Position));
+        endPoint = malloc(sizeof(Position));
+        endPoint->x = 0;
+        endPoint->y = 0;
+        startPoint->x = game->ball.position.x;
+        startPoint->y = game->ball.position.y;
         init = true;
     }
 
@@ -78,38 +87,53 @@ void moveBall(Game *game){
     Position *collidedCoordinates = getBallCollidedCoordinates(game);
 
     if(collidedCoordinates != NULL && activeCollision){
-        startPoint = game->ball.position;
-
-        endPoint.x = getRandomInt((int)floorf(SCREEN_WIDTH / 2) - 150, (int)floorf(SCREEN_WIDTH / 2) + 150);
-        endPoint.y = getRandomInt((int)floorf(SCREEN_HEIGTH / 2) - 150, (int)floorf(SCREEN_HEIGTH / 2) + 150);
-
-        float m = getAngularCoefficient(startPoint, endPoint);
-
-        if (collidedCoordinates->y == 0) {
-            if(m > 0) game->ball.diraction = 1;
-            else game->ball.diraction = -1;
-        } else if (collidedCoordinates->y == SCREEN_HEIGTH){
-            if(m > 0) game->ball.diraction = -1;
-            else game->ball.diraction = 1;
-        } else game->ball.diraction *= -1;
-
+        updateBallMovment(game, startPoint, endPoint, collidedCoordinates);
+        updateBallDiraction(game, collidedCoordinates, getAngularCoefficient(startPoint, endPoint));
         activeCollision = false;
 
     } else if (!activeCollision && collidedCoordinates == NULL) activeCollision = true;
 
     game->ball.position = getBallPosition(game, startPoint, endPoint);
+    free(collidedCoordinates);
 }
 
 
-Position getBallPosition(Game *game, Position startPoint, Position endPoint) {
+void updateBallMovment(Game *game, Position *startPoint, Position *endPoint, Position *collidedCoordinates){
+    startPoint->x = game->ball.position.x;
+    startPoint->y = game->ball.position.y;
+
+    endPoint->x = getRandomInt((int)floorf(SCREEN_WIDTH / 2) - 150, (int)floorf(SCREEN_WIDTH / 2) + 150);
+    endPoint->y = getRandomInt((int)floorf(SCREEN_HEIGTH / 2) - 150, (int)floorf(SCREEN_HEIGTH / 2) + 150);
+}
+
+
+void updateBallDiraction(Game *game, Position *collidedCoordinates, float m){
+
+    if (collidedCoordinates->y == 0){
+        if (m > 0)
+            game->ball.diraction = 1;
+        else
+            game->ball.diraction = -1;
+    }else if (collidedCoordinates->y == SCREEN_HEIGTH){
+        if (m > 0)
+            game->ball.diraction = -1;
+        else
+            game->ball.diraction = 1;
+    }else
+        game->ball.diraction *= -1;
+}
+
+
+Position getBallPosition(Game *game, Position *startPoint, Position *endPoint) {
     int newXPos;
     int newYPos;
 
     newXPos = game->ball.position.x + game->ball.diraction;
 
-    newYPos = (int)floorf((getAngularCoefficient(startPoint, endPoint) * (float)(newXPos - startPoint.x)) + (float)(startPoint.y));
+    newYPos = (int)floorf((getAngularCoefficient(startPoint, endPoint) * (float)(newXPos - startPoint->x)) + (float)(startPoint->y));
     return (Position){newXPos, newYPos};
 }
+
 
 bool isBallMovmentAllowed(Game *game){
 
@@ -133,8 +157,8 @@ bool isBallMovmentAllowed(Game *game){
         oldTime = newTime;
         return true;
     }
-
 }
+
 
 Position* getBallCollidedCoordinates(Game *game){
 
@@ -142,9 +166,12 @@ Position* getBallCollidedCoordinates(Game *game){
        int x = (game->ball.position.x + (cos(i * (M_PI / 180)) * BALL_RADIUS));
        int y = (game->ball.position.y + (sin(i * (M_PI / 180)) * BALL_RADIUS));
 
-       if (x == SCREEN_WIDTH || x == 0) return &(Position){x,y};
-       if (y == 0 || y == SCREEN_HEIGTH) return &(Position){x,y};
-       
+       if (x == SCREEN_WIDTH || x == 0 || y == 0 || y == SCREEN_HEIGTH){
+            Position *newPos = malloc(sizeof(Position));
+            newPos->x = x;
+            newPos->y = y;
+            return newPos;
+       }
     }
 
     return NULL;

@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <SDL2/SDL.h>
-#include "headers/entity.h"
-#include "headers/constants.h"
-#include "headers/utils.h"
+#include "libs/entity.h"
+#include "libs/constants.h"
+#include "libs/utils.h"
 
 /**
  * ==============================
@@ -47,6 +47,6 @@ float getRandomFloat(float min, float max) {
     return min + ((float)rand() / RAND_MAX) * (max - min); 
 }
 
-float getAngularCoefficient(Position point1, Position point2) {
-    return ((float)(point2.y - point1.y) / (float)(point2.x - point1.x));
+float getAngularCoefficient(Position* point1, Position* point2) {
+    return ((float)(point2->y - point1->y) / (float)(point2->x - point1->x));
 }
