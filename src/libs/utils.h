@@ -15,4 +15,7 @@ Position getRandomPosition();
 /* ====== MATH FUNCTION ======= */
 float getAngularCoefficient(Position* point1, Position* point2);
 
+/* ====== CREATION FUNCTION ======= */
+Position *createPosition(int x, int y);
+
 #endif

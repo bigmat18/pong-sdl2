@@ -41,22 +41,26 @@ int main(void){
             switch(event.key.keysym.scancode){
                 case SDL_SCANCODE_UP: {
                     updatePlayerPosition(&game, 1, MOVING_UP);
-                    pause = false;
                     break;
                 }
                 case SDL_SCANCODE_DOWN: {
                     updatePlayerPosition(&game, 1, MOVING_DOWN);
-                    pause = false;
                     break;
                 }
                 case SDL_SCANCODE_W: {
                     updatePlayerPosition(&game, 0, MOVING_UP);
-                    pause = false;
                     break;
                 }
                 case SDL_SCANCODE_S: {
                     updatePlayerPosition(&game, 0, MOVING_DOWN);
+                    break;
+                }
+                case SDL_SCANCODE_SPACE: {
                     pause = false;
+                    break;
+                }
+                case SDL_SCANCODE_B: {
+                    pause = true;
                     break;
                 }
                 default: {

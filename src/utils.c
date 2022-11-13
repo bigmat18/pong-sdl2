@@ -47,6 +47,27 @@ float getRandomFloat(float min, float max) {
     return min + ((float)rand() / RAND_MAX) * (max - min); 
 }
 
+/**
+ * ==============================
+ * ====== MATH FUNCTION =======
+ */
+
 float getAngularCoefficient(Position* point1, Position* point2) {
     return ((float)(point2->y - point1->y) / (float)(point2->x - point1->x));
+}
+
+/**
+ * ==============================
+ * ====== CREATION FUNCTION =======
+ */
+
+Position* createPosition(int x, int y) {
+    Position *newPos = malloc(sizeof(Position));
+    if(newPos == NULL){
+        printf("Memory full");
+        exit(1);
+    }
+    newPos->x = x;
+    newPos->y = y;
+    return newPos;
 }

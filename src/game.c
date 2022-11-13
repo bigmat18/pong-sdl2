@@ -98,7 +98,7 @@ void moveBall(Game *game, bool *end){
     }
 
     if(collidedCoordinates != NULL && activeCollision){
-        updateBallMovment(game, startPoint, endPoint);
+        updateBallMovment(game, startPoint, endPoint, collidedCoordinates);
         updateBallDiraction(game, collidedCoordinates, getAngularCoefficient(startPoint, endPoint));
         activeCollision = false;
 
@@ -109,14 +109,19 @@ void moveBall(Game *game, bool *end){
 }
 
 
-void updateBallMovment(Game *game, Position *startPoint, Position *endPoint){
+void updateBallMovment(Game *game, Position *startPoint, Position *endPoint, Position *collidedCoordinates){
     startPoint->x = game->ball.position.x;
     startPoint->y = game->ball.position.y;
 
     int x;
 
-    do x = getRandomInt((int)floorf(SCREEN_WIDTH / 2) - 150, (int)floorf(SCREEN_WIDTH / 2) + 150);
-    while(x == startPoint->x);
+    if(collidedCoordinates->y == 0 || collidedCoordinates->y == SCREEN_HEIGTH){
+        if(game->ball.diraction == -1) x = 0;
+        else x = SCREEN_WIDTH;
+    } else {
+        do x = getRandomInt((int)floorf(SCREEN_WIDTH / 2) - 150, (int)floorf(SCREEN_WIDTH / 2) + 150);
+        while(x == startPoint->x);
+    }
 
     endPoint->x = x;
     endPoint->y = getRandomInt((int)floorf(SCREEN_HEIGTH / 2) - 150, (int)floorf(SCREEN_HEIGTH / 2) + 150);
@@ -186,23 +191,21 @@ Position* getBallCollidedCoordinates(Game *game){
        int x = (game->ball.position.x + (cos(i * (M_PI / 180)) * BALL_RADIUS));
        int y = (game->ball.position.y + (sin(i * (M_PI / 180)) * BALL_RADIUS));
 
-       if ((y == 0 || y == SCREEN_HEIGTH) ||
-           ((x <= PLAYER_WIGTH && y >= game->players[0].position.y && y <= game->players[0].position.y + PLAYER_HEIGTH) ||
-            (x >= (SCREEN_WIDTH - PLAYER_WIGTH) && y >= game->players[1].position.y && y <= game->players[1].position.y + PLAYER_HEIGTH)))
-       {
-           Position *newPos = malloc(sizeof(Position));
-           newPos->x = x;
-           newPos->y = y;
-           return newPos;
-       }
+       if ((y == 0 || y == SCREEN_HEIGTH))
+           return createPosition(x, y);
 
-       if(x == 0 || x == SCREEN_WIDTH){
-            if(x == 0) game->players[1].score++;
-            else game->players[0].score++;
-            Position *newPos = malloc(sizeof(Position));
-            newPos->x = -1;
-            newPos->y = -1;
-            return newPos;
+       if((x <= PLAYER_WIGTH && y >= game->players[0].position.y && y <= game->players[0].position.y + PLAYER_HEIGTH) ||
+          (x >= (SCREEN_WIDTH - PLAYER_WIGTH) && y >= game->players[1].position.y && y <= game->players[1].position.y + PLAYER_HEIGTH))
+            return createPosition(x, y);
+           
+       if(x == 0){
+            game->players[0].score++;
+            game->ball.diraction = -1;
+            return createPosition(-1, -1);
+       }else if(x == SCREEN_WIDTH) {
+           game->players[1].score++;
+           game->ball.diraction = 1;
+           return createPosition(-1, -1);
        }
     }
 
@@ -212,5 +215,4 @@ Position* getBallCollidedCoordinates(Game *game){
 void resetBall(Game *game){
     game->ball.position.x = (int)floorf(SCREEN_WIDTH / 2);
     game->ball.position.y = (int)floorf(SCREEN_HEIGTH / 2);
-    game->ball.diraction = -1;
 }
