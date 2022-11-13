@@ -76,7 +76,7 @@ void moveBall(Game *game, bool end){
         startPoint = malloc(sizeof(Position));
         endPoint = malloc(sizeof(Position));
         endPoint->x = 0;
-        endPoint->y = 0;
+        endPoint->y = getRandomInt(0, SCREEN_HEIGTH);
         startPoint->x = game->ball.position.x;
         startPoint->y = game->ball.position.y;
         init = true;
@@ -85,6 +85,15 @@ void moveBall(Game *game, bool end){
     if(!isBallMovmentAllowed(game)) return;
 
     Position *collidedCoordinates = getBallCollidedCoordinates(game);
+
+    if (collidedCoordinates != NULL && collidedCoordinates->x == -1){
+        resetBall(game);
+        free(startPoint);
+        free(endPoint);
+        free(collidedCoordinates);
+        init = false;
+        return;
+    }
 
     if(collidedCoordinates != NULL && activeCollision){
         updateBallMovment(game, startPoint, endPoint);
@@ -136,6 +145,10 @@ Position getBallPosition(Game *game, Position *startPoint, Position *endPoint) {
     newXPos = game->ball.position.x + game->ball.diraction;
 
     newYPos = (int)floorf((getAngularCoefficient(startPoint, endPoint) * (float)(newXPos - startPoint->x)) + (float)(startPoint->y));
+
+    if(newYPos < 0) newYPos = 0;
+    else if(newYPos > SCREEN_HEIGTH) newYPos = SCREEN_HEIGTH; 
+
     return (Position){newXPos, newYPos};
 }
 
@@ -167,18 +180,33 @@ bool isBallMovmentAllowed(Game *game){
 
 Position* getBallCollidedCoordinates(Game *game){
 
-    for(int i=0; i<360; i++){
+    for(int i=0; i<360; i+=90){
        int x = (game->ball.position.x + (cos(i * (M_PI / 180)) * BALL_RADIUS));
        int y = (game->ball.position.y + (sin(i * (M_PI / 180)) * BALL_RADIUS));
 
-       if (x == SCREEN_WIDTH || x == 0 || y == 0 || y == SCREEN_HEIGTH){
-            Position *newPos = malloc(sizeof(Position));
-            newPos->x = x;
-            newPos->y = y;
-            return newPos;
+       if ((y == 0 || y == SCREEN_HEIGTH) ||
+           ((x <= PLAYER_WIGTH && y >= game->players[0].position.y && y <= game->players[0].position.y + PLAYER_HEIGTH) ||
+            (x >= (SCREEN_WIDTH - PLAYER_WIGTH) && y >= game->players[1].position.y && y <= game->players[1].position.y + PLAYER_HEIGTH)))
+       {
+           Position *newPos = malloc(sizeof(Position));
+           newPos->x = x;
+           newPos->y = y;
+           return newPos;
+       }
+
+       if(x == 0 || x == SCREEN_WIDTH){
+           Position *newPos = malloc(sizeof(Position));
+           newPos->x = -1;
+           newPos->y = -1;
+           return newPos;
        }
     }
 
     return NULL;
 }
 
+void resetBall(Game *game){
+    game->ball.position.x = (int)floorf(SCREEN_WIDTH / 2);
+    game->ball.position.y = (int)floorf(SCREEN_HEIGTH / 2);
+    game->ball.diraction = -1;
+}

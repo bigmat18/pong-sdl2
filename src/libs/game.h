@@ -39,4 +39,6 @@ bool isBallMovmentAllowed(Game *game);
 
 Position* getBallCollidedCoordinates(Game *game);
 
+void resetBall(Game *game);
+
 #endif
