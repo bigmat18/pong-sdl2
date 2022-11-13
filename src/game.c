@@ -85,10 +85,14 @@ void moveBall(Game *game){
 
         float m = getAngularCoefficient(startPoint, endPoint);
 
-        if (((collidedCoordinates->y == 0 || collidedCoordinates->y == SCREEN_HEIGTH) && m > 0) ||
-            (collidedCoordinates->y != 0 && collidedCoordinates->y != SCREEN_HEIGTH))
-            game->ball.diraction *= -1;
-        
+        if (collidedCoordinates->y == 0) {
+            if(m > 0) game->ball.diraction = 1;
+            else game->ball.diraction = -1;
+        } else if (collidedCoordinates->y == SCREEN_HEIGTH){
+            if(m > 0) game->ball.diraction = -1;
+            else game->ball.diraction = 1;
+        } else game->ball.diraction *= -1;
+
         activeCollision = false;
 
     } else if (!activeCollision && collidedCoordinates == NULL) activeCollision = true;
