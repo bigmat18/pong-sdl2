@@ -19,6 +19,7 @@ int main(void){
     SDL_Renderer *renderer = scp(SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED));
 
     bool quit = false;
+    bool pause = true;
     Game game = {0};
 
     initGame(&game);
@@ -33,18 +34,22 @@ int main(void){
             switch(event.key.keysym.scancode){
                 case SDL_SCANCODE_UP: {
                     updatePlayerPosition(&game, 1, MOVING_UP);
+                    pause = false;
                     break;
                 }
                 case SDL_SCANCODE_DOWN: {
                     updatePlayerPosition(&game, 1, MOVING_DOWN);
+                    pause = false;
                     break;
                 }
                 case SDL_SCANCODE_W: {
                     updatePlayerPosition(&game, 0, MOVING_UP);
+                    pause = false;
                     break;
                 }
                 case SDL_SCANCODE_S: {
                     updatePlayerPosition(&game, 0, MOVING_DOWN);
+                    pause = false;
                     break;
                 }
                 default: {
@@ -52,9 +57,9 @@ int main(void){
                 }
             }
         }
-
-        moveBall(&game, quit);
+        if(!pause) moveBall(&game, &pause);
         renderGame(renderer, &game);
     }
+    moveBall(&game, &quit);
     return 0;
 }

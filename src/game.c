@@ -60,13 +60,13 @@ void updatePlayerPosition(Game *game, int player, PlayerMovment movment){
 }
 
 
-void moveBall(Game *game, bool end){
+void moveBall(Game *game, bool *end){
     static Position *endPoint;
     static Position *startPoint;
     static bool init = false;
     static bool activeCollision = true;
 
-    if(end){
+    if(*end){
         free(startPoint);
         free(endPoint);
         return;
@@ -92,6 +92,7 @@ void moveBall(Game *game, bool end){
         free(endPoint);
         free(collidedCoordinates);
         init = false;
+        *end = true;
         return;
     }
 

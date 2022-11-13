@@ -27,7 +27,7 @@ void initBall(Game *game);
 /* Update player position reference with 'player' */
 void updatePlayerPosition(Game *game, int player, PlayerMovment movment);
 
-void moveBall(Game *game, bool end);
+void moveBall(Game *game, bool *end);
 
 Position getBallPosition(Game *game, Position *startPoint, Position *endPoint);
 
