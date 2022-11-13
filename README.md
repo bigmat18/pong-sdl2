@@ -17,3 +17,12 @@ After this you can run the code with this command:
 ```
 ./build/bebug/play
 ```
+
+## Game Image
+<table>
+  <tr>
+    <th><img src="https://github.com/bigmat18/Pong/blob/master/.md/pong1.png" width="300"></th>
+    <th><p>&nbsp;</p></th>
+    <th><img src="https://github.com/bigmat18/Pong/blob/master/.md/pong2.png" width="300"></th>
+  </tr>
+</table>
