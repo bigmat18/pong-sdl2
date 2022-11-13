@@ -199,11 +199,11 @@ Position* getBallCollidedCoordinates(Game *game){
             return createPosition(x, y);
            
        if(x == 0){
-            game->players[0].score++;
+            game->players[1].score++;
             game->ball.diraction = -1;
             return createPosition(-1, -1);
        }else if(x == SCREEN_WIDTH) {
-           game->players[1].score++;
+           game->players[0].score++;
            game->ball.diraction = 1;
            return createPosition(-1, -1);
        }
