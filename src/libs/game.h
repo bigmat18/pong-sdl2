@@ -31,7 +31,7 @@ void moveBall(Game *game, bool end);
 
 Position getBallPosition(Game *game, Position *startPoint, Position *endPoint);
 
-void updateBallMovment(Game *game, Position *startPoint, Position *endPoint, Position *collidedCoordinates);
+void updateBallMovment(Game *game, Position *startPoint, Position *endPoint);
 
 void updateBallDiraction(Game *game, Position *collidedCoordinates, float m);
 

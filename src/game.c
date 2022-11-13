@@ -87,7 +87,7 @@ void moveBall(Game *game, bool end){
     Position *collidedCoordinates = getBallCollidedCoordinates(game);
 
     if(collidedCoordinates != NULL && activeCollision){
-        updateBallMovment(game, startPoint, endPoint, collidedCoordinates);
+        updateBallMovment(game, startPoint, endPoint);
         updateBallDiraction(game, collidedCoordinates, getAngularCoefficient(startPoint, endPoint));
         activeCollision = false;
 
@@ -98,11 +98,16 @@ void moveBall(Game *game, bool end){
 }
 
 
-void updateBallMovment(Game *game, Position *startPoint, Position *endPoint, Position *collidedCoordinates){
+void updateBallMovment(Game *game, Position *startPoint, Position *endPoint){
     startPoint->x = game->ball.position.x;
     startPoint->y = game->ball.position.y;
 
-    endPoint->x = getRandomInt((int)floorf(SCREEN_WIDTH / 2) - 150, (int)floorf(SCREEN_WIDTH / 2) + 150);
+    int x;
+
+    do x = getRandomInt((int)floorf(SCREEN_WIDTH / 2) - 150, (int)floorf(SCREEN_WIDTH / 2) + 150);
+    while(x == startPoint->x);
+
+    endPoint->x = x;
     endPoint->y = getRandomInt((int)floorf(SCREEN_HEIGTH / 2) - 150, (int)floorf(SCREEN_HEIGTH / 2) + 150);
 }
 
