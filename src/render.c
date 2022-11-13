@@ -2,6 +2,7 @@
 #include "libs/constants.h"
 #include "libs/utils.h"
 #include <math.h>
+#include <stdbool.h>
 
 /*
  * =================================
@@ -14,6 +15,7 @@ void renderGame(SDL_Renderer *renderer, Game *game){
 
     renderPlayers(renderer, game);
     renderBall(renderer, game);
+    renderScore(renderer, game);
 
     SDL_RenderPresent(renderer);
 }
@@ -29,6 +31,40 @@ void renderBall(SDL_Renderer *renderer, Game *game){
                 &game->ball.position, 
                 BALL_RADIUS, 
                 (SDL_Color){HEX_COLOR(BALL_COLOR)});
+}
+
+void renderScore(SDL_Renderer *renderer, Game *game){
+    static SDL_Surface *surface;
+    static SDL_Texture *texture;
+    static bool init = false;
+    static int previusScore[2] = {-1,-1};
+
+    if (previusScore[0] == game->players[0].score && previusScore[1] == game->players[1].score)
+        return;
+
+    if (!init){
+        SDL_DestroyTexture(texture);
+        SDL_FreeSurface(surface);
+    }
+
+    char str[32];
+    sprintf(str, "%d - %d", game->players[0].score, game->players[1].score);
+
+    surface = TTF_RenderText_Solid(game->font, str, (SDL_Color){HEX_COLOR(SCORE_COLOR)});
+
+    if (!surface){
+        printf("Error: %s\n", TTF_GetError());
+        exit(1);
+    }
+
+    texture = scp(SDL_CreateTextureFromSurface(renderer, surface));
+
+    int textW = 0;
+    int textH = 0;
+    SDL_QueryTexture(texture, NULL, NULL, &textW, &textH);
+    SDL_Rect textRect = {(int)floorf(SCREEN_WIDTH / 2) - 30, 0, textW, textH};
+
+    SDL_RenderCopy(renderer, texture, NULL, &textRect);
 }
 
 /*

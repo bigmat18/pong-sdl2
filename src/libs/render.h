@@ -18,6 +18,8 @@ void renderPlayers(SDL_Renderer *renderer, Game *game);
 /* Render the game ball*/
 void renderBall(SDL_Renderer *renderer, Game *game);
 
+void renderScore(SDL_Renderer *renderer, Game *game);
+
 /*
  * =================================
  * ====== GEMETRY RENDER ===========

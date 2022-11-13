@@ -1,3 +1,5 @@
+#include <SDL_ttf.h>
+
 #ifndef ENTITY_H
 #define ENTITY_H
 
@@ -22,6 +24,7 @@ typedef struct {
 /* Define a player in the game */
 typedef struct {
     Position position;
+    int score;
 } Player;
 
 /* Define all element and variable present in game*/
@@ -29,6 +32,7 @@ typedef struct {
     Player players[2];
     Ball ball;
     int score[2];
+    TTF_Font *font;
 } Game;
 
 #endif

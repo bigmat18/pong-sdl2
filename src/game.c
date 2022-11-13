@@ -26,6 +26,7 @@ void initGame(Game *game){
 void initPlayer(Game *game, int player){
     game->players[player].position.x = (int)floorf((SCREEN_WIDTH - PLAYER_WIGTH) * player);
     game->players[player].position.y = (int)floorf((SCREEN_HEIGTH / 2) - (PLAYER_HEIGTH / 2));
+    game->players[player].score = 0;
 }
 
 void initBall(Game *game){
@@ -196,10 +197,12 @@ Position* getBallCollidedCoordinates(Game *game){
        }
 
        if(x == 0 || x == SCREEN_WIDTH){
-           Position *newPos = malloc(sizeof(Position));
-           newPos->x = -1;
-           newPos->y = -1;
-           return newPos;
+            if(x == 0) game->players[1].score++;
+            else game->players[0].score++;
+            Position *newPos = malloc(sizeof(Position));
+            newPos->x = -1;
+            newPos->y = -1;
+            return newPos;
        }
     }
 
