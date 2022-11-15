@@ -4,10 +4,7 @@
 #ifndef RENDER_H
 #define RENDER_H
 
-/*
- * =================================
- * ====== RENDER GAME ELEMENT ======
- */
+/* ====== RENDER GAME ELEMENT ====== */
 
 /* Render all element on screen */
 void renderGame(SDL_Renderer *renderer, Game *game);
@@ -20,10 +17,8 @@ void renderBall(SDL_Renderer *renderer, Game *game);
 
 void renderScore(SDL_Renderer *renderer, Game *game);
 
-/*
- * =================================
- * ====== GEMETRY RENDER ===========
- */
+
+/* ====== GEMETRY RENDER ====== */
 
 /* Render a generic square */
 void renderSquare(SDL_Renderer *renderer, Position *position, int width, int heigth, SDL_Color color);
